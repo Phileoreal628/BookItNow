@@ -4,8 +4,12 @@
 
 /backend/.env
 
+/backend/.env.e2e
+
 /frontend/.env
 
+/frontend/dist
+/backend/dist
 
 # Logs
 /backend/logs

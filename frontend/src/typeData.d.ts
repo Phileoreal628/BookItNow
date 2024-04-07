@@ -13,10 +13,16 @@ type ToastMessage = {
 
 type AppContextType = {
   showToast: (toastMessage: ToastMessage) => void;
+  isLoggedIn: boolean;
 };
 
 type ToastPros = {
   message: string;
   type: "SUCCESS" | "ERROR";
   onClose: () => void;
+};
+
+type SignInType = {
+  email: string;
+  password: string;
 };

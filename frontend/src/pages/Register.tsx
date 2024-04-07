@@ -1,12 +1,15 @@
 import { useForm } from "react-hook-form";
 import * as apiClient from "../apiClients";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useAppContext } from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Register = () => {
 
-    const { showToast } = useAppContext();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const { showToast, isLoggedIn } = useAppContext();
     const { register, watch, handleSubmit, formState: { errors } } = useForm<RegisterFormData>();
 
     const onSubmit = handleSubmit((data) => {
@@ -14,14 +17,22 @@ const Register = () => {
     });
 
     const registerMutation = useMutation(apiClient.registerUser, {
-        onSuccess: () => {
-            showToast({ "message": "User Registration Successful", "type": "SUCCESS" });
+        onSuccess: async () => {
+            showToast({ "message": "Registration Successful !", "type": "SUCCESS" });
+            await queryClient.invalidateQueries("validateUser");
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
         },
         onError: (error: Error) => {
             showToast({ "message": error.message, "type": "ERROR" });
         },
     })
 
+    if (isLoggedIn) {
+        navigate("/");
+        return;
+    }
     return (
         <form className="flex flex-col gap-x-5 gap-y-3" onSubmit={onSubmit}>
             <h2 className="text-3xl font-bold">Create an Account</h2>
