@@ -6,6 +6,7 @@ import hotelRoutes from "./routes/myHotels";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import path from "path";
+const bodyParser = require("body-parser");
 
 import { v2 as cloudinary } from "cloudinary";
 
@@ -23,7 +24,7 @@ cloudinary.config({
 const app = express();
 
 app.use(cookieParser());
-
+app.use(bodyParser.json({ limit: "100mb" }));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));

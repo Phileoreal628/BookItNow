@@ -27,12 +27,12 @@ router.post(
     body("description").notEmpty().withMessage("Description is required"),
     body("type").notEmpty().withMessage("Hotel type is required"),
     body("price").notEmpty().isNumeric().withMessage("Price is required"),
-    body("facility")
+    body("facilities")
       .notEmpty()
       .isArray()
       .withMessage("Facilities are required"),
   ],
-  uploadOptions.array("images", 5),
+  uploadOptions.array("images", 6),
   async (req: Request, res: Response) => {
     try {
       const imagesFromClientSide = req.files as Express.Multer.File[];
@@ -55,8 +55,41 @@ router.post(
   }
 );
 
+router.get("/getMyHotels", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    const hotels = await Hotel.find({ userid: userId });
+    res.status(201).send(hotels);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong" });
+  }
+});
+
+router.get(
+  "/getHotels/:id",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    try {
+      const hotelId = req.params.id.toString();
+      const userId = req.userId;
+
+      const hotel = Hotel.find({
+        _id: hotelId,
+        userid: userId,
+      });
+
+      res.status(201).send(hotel);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: "Something Went Wrong" });
+    }
+  }
+);
+
 async function cloudinaryUpload(imageFiles: Express.Multer.File[]) {
   if (!imageFiles) return [];
+
   const imagesToUpload = imageFiles.map(async image => {
     const base64Image = Buffer.from(image.buffer).toString("base64");
     const URI = "data:" + image.mimetype + ";base64," + base64Image;

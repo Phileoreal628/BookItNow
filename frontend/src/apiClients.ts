@@ -51,3 +51,39 @@ export const signOut = async () => {
 
   if (!response.ok) throw new Error("Error in Sign Out");
 };
+
+export const addHotel = async (hotelData: FormData) => {
+  const response = await fetch(`${SERVER_URL}/api/v1/hotels/add-hotel`, {
+    method: "POST",
+    credentials: "include",
+    body: hotelData,
+  });
+  if (!response.ok) throw new Error("Adding Hotel Failed");
+  const result = await response.json();
+
+  return result;
+};
+
+export const getMyHotels = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/hotels/getMyHotels`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error("Failed To Fetch Hotels");
+  const result = await response.json();
+
+  return result;
+};
+
+export const getHotelById = async (hotelId: string): Promise<HotelType> => {
+  const response = await fetch(
+    `${SERVER_URL}/api/v1/hotels/getHotels/${hotelId}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  if (!response.ok) throw new Error("Failed To Fetch Hotel");
+  const result = await response.json();
+  return result;
+};

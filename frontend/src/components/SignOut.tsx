@@ -21,7 +21,7 @@ const SignOut = () => {
         signOutMutation.mutate();
     }
     return (
-        <button onClick={onSubmit} className="bg-blue-800 text-white p-2 hover:bg-blue-700 font-bold">Sign Out</button>
+        <button onClick={onSubmit} className="bg-blue-800 text-white p-2 hover:bg-blue-700">Sign Out</button>
     )
 }
 
