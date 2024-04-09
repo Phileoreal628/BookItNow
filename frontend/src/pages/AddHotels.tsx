@@ -2,6 +2,7 @@ import { useMutation } from "react-query";
 import HotelFormHandler from "../components/HotelForm/HotelFormHandler";
 import { useAppContext } from "../contexts/AppContext";
 import * as apiClient from "../apiClients";
+import Loader from "../components/Loader";
 
 const AddHotel = () => {
     const { showToast } = useAppContext();
@@ -18,9 +19,13 @@ const AddHotel = () => {
     const saveHotel = (hotelData: FormData) => {
         mutate(hotelData);
     }
-    return (<div>
-        <HotelFormHandler OnSaveHotel={saveHotel} isLoading={isLoading} />
-    </div>)
+    if (isLoading) {
+        return <Loader />
+    }
+    return (
+        <div>
+            <HotelFormHandler OnSaveHotel={saveHotel} isLoading={isLoading} />
+        </div>)
 }
 
 export default AddHotel;

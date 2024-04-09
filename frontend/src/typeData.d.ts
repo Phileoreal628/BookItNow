@@ -38,7 +38,8 @@ type HotelFormData = {
   price: number;
   rating: number;
   facilities: string[];
-  images: FileList;
+  imageFiles: FileList;
+  imageURIs: string[];
 };
 
 type HotelType = {

@@ -87,3 +87,18 @@ export const getHotelById = async (hotelId: string): Promise<HotelType> => {
   const result = await response.json();
   return result;
 };
+
+export const updateHotelById = async (hotelData: FormData) => {
+  const hotelId = hotelData.get("hotelId");
+  const response = await fetch(
+    `${SERVER_URL}/api/v1/hotels/update-hotel/${hotelId}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      body: hotelData,
+    }
+  );
+  if (!response.ok) throw new Error("Failed To update Hotel");
+  const result = await response.json();
+  return result;
+};

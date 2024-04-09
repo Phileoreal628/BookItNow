@@ -40,7 +40,7 @@ router.post(
 
       const images = await cloudinaryUpload(imagesFromClientSide);
 
-      newHotel.images = images;
+      newHotel.imageURIs = images;
       newHotel.lastUpdated = new Date();
       newHotel.userid = req.userId;
 
@@ -74,7 +74,7 @@ router.get(
       const hotelId = req.params.id.toString();
       const userId = req.userId;
 
-      const hotel = Hotel.find({
+      const hotel = await Hotel.findOne({
         _id: hotelId,
         userid: userId,
       });
@@ -86,7 +86,57 @@ router.get(
     }
   }
 );
+router.put(
+  "/update-hotel/:id",
+  verifyToken,
+  [
+    body("name").notEmpty().withMessage("Name is required"),
+    body("city").notEmpty().withMessage("City is required"),
+    body("country").notEmpty().withMessage("Country is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("type").notEmpty().withMessage("Hotel type is required"),
+    body("price").notEmpty().isNumeric().withMessage("Price is required"),
+    body("facilities")
+      .notEmpty()
+      .isArray()
+      .withMessage("Facilities are required"),
+  ],
+  uploadOptions.array("images"),
+  async (req: Request, res: Response) => {
+    try {
+      const hotelToUpdateId = req.params.id.toString();
+      const updatedHotel: HotelType = req.body;
+      updatedHotel.lastUpdated = new Date();
 
+      const hotel = await Hotel.findOneAndUpdate(
+        {
+          _id: hotelToUpdateId,
+          userid: req.userId,
+        },
+        updatedHotel,
+        { new: true }
+      );
+
+      if (!hotel) {
+        return res.status(404).json({ message: "Hotel not found" });
+      }
+      const imagesToUpload = req.files as Express.Multer.File[];
+      const updatedImageURIs = await cloudinaryUpload(imagesToUpload);
+
+      //To handle newly added and deleted images
+      hotel.imageURIs = [
+        ...updatedImageURIs,
+        ...(updatedHotel.imageURIs || []),
+      ];
+
+      await hotel.save();
+      res.status(201).send(hotel);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: "Something went wrong" });
+    }
+  }
+);
 async function cloudinaryUpload(imageFiles: Express.Multer.File[]) {
   if (!imageFiles) return [];
 

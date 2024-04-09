@@ -4,21 +4,26 @@ import * as apiClient from "../apiClients";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
 
+import Loader from "../components/Loader";
+
 const MyHotels = () => {
 
-    const { data: hotels } = useQuery("getMyHotels", apiClient.getMyHotels, {
+    const { data: hotels, isFetching } = useQuery("getMyHotels", apiClient.getMyHotels, {
         refetchOnWindowFocus: false,
         onError: () => {
             console.log("error");
         }
     });
+    if (isFetching) {
+        return <Loader />
+    }
     if (!hotels || !hotels.length) {
         return (
             <div className="text-xl font-bold">No Hotels Found !</div>
         )
     }
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-5">
             <div className="flex justify-between">
                 <h1 className="text-3xl font-bold">My Hotels</h1>
                 <Link className="bg-blue-700 hover:bg-blue-500 font-bold p-2 text-white " to="/add-hotel">Add Hotel</Link>

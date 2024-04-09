@@ -11,6 +11,6 @@ export type HotelType = {
   price: number;
   rating: number;
   facilities: string[];
-  images: string[];
+  imageURIs: string[];
   lastUpdated: Date;
 };

@@ -4,18 +4,21 @@ import HotelTypeSection from "./HotelTypeSection";
 import HotelFacilities from "./HotelFacilities";
 import HotelGuest from "./HotelGuest";
 import HotelImages from "./HotelImages";
+import { useEffect } from "react";
 
 type HotelFormProps = {
     OnSaveHotel: (hotelData: FormData) => void;
-    isLoading: boolean
+    isLoading: boolean;
+    hotel?: HotelType;
 }
-const HotelFormHandler = ({ OnSaveHotel, isLoading }: HotelFormProps) => {
+const HotelFormHandler = ({ OnSaveHotel, isLoading, hotel }: HotelFormProps) => {
     const formMethods = useForm<HotelFormData>();
 
-    const { handleSubmit } = formMethods;
+    const { handleSubmit, reset } = formMethods;
 
     const onSubmit = handleSubmit((formDataFromuser: HotelFormData) => {
         const formData = new FormData();
+        if (hotel) formData.append("hotelId", hotel._id);
         formData.append("name", formDataFromuser.name);
         formData.append("city", formDataFromuser.city);
         formData.append("country", formDataFromuser.country);
@@ -30,11 +33,22 @@ const HotelFormHandler = ({ OnSaveHotel, isLoading }: HotelFormProps) => {
             formData.append(`facilities[${index}]`, facility);
         });
 
-        Array.from(formDataFromuser.images).forEach(image => {
+        if (formDataFromuser.imageURIs) {
+            formDataFromuser.imageURIs.forEach((image, index) => {
+                formData.append(`imageURIs[${index}]`, image);
+            });
+        }
+
+        Array.from(formDataFromuser.imageFiles).forEach(image => {
             formData.append(`images`, image);
         })
         OnSaveHotel(formData);
-    })
+    });
+
+    useEffect(() => {
+        reset(hotel)
+    }, [hotel, reset]);
+
 
     return (
         <FormProvider {...formMethods}>
@@ -46,7 +60,7 @@ const HotelFormHandler = ({ OnSaveHotel, isLoading }: HotelFormProps) => {
                 <HotelImages />
                 <span className="flex justify-end">
                     <button type="submit" disabled={isLoading} className="bg-blue-800 hover:bg-blue-600 text-white p-2 disabled:bg-gray-300 font-bold">
-                        {isLoading ? "Saving" : "Save"}
+                        {isLoading ? "Saving..." : "Save"}
                     </button>
                 </span>
             </form>
