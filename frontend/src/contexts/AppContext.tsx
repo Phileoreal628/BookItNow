@@ -5,7 +5,7 @@ import * as apiClient from "../apiClients";
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
-export const AppContextAprovider = ({ children }: { children: React.ReactNode }) => {
+export const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);

@@ -102,3 +102,47 @@ export const updateHotelById = async (hotelData: FormData) => {
   const result = await response.json();
   return result;
 };
+
+export const searchHotels = async (
+  searchOptions: searchParams
+): Promise<HotelSearchResponse> => {
+  const optionsToSend = new URLSearchParams();
+  optionsToSend.append("destination", searchOptions.destination || "");
+  optionsToSend.append("checkInTime", searchOptions.checkInTime || "");
+  optionsToSend.append("checkOutTime", searchOptions.checkOutTime || "");
+  optionsToSend.append(
+    "adultMemberCount",
+    searchOptions.adultMemberCount || ""
+  );
+  optionsToSend.append("childrenCount", searchOptions.childrenCount || "");
+  optionsToSend.append("pageNumber", searchOptions.pageNumber || "");
+  optionsToSend.append("price", searchOptions.price || "");
+  optionsToSend.append("sortOpts", searchOptions.sortOpts || "");
+
+  searchOptions.facilities?.forEach(facility =>
+    optionsToSend.append("facility", facility)
+  );
+
+  searchOptions.type?.forEach(t => optionsToSend.append("type", t));
+  searchOptions.rating?.forEach(rate => optionsToSend.append("rating", rate));
+
+  const response = await fetch(
+    `${SERVER_URL}/api/v1/hotels/search-hotels?${optionsToSend}`,
+    {
+      method: "GET",
+    }
+  );
+
+  if (!response.ok) throw new Error("Failed To update Hotel");
+  const result = await response.json();
+  return result;
+};
+
+export const getHotel = async (id: string): Promise<HotelType> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/hotels/getHotel/${id}`, {
+    method: "GET",
+  });
+  if (!response.ok) throw new Error("Failed To get Hotel");
+  const result = await response.json();
+  return result;
+};

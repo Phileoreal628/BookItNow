@@ -16,6 +16,27 @@ type AppContextType = {
   isLoggedIn: boolean;
 };
 
+type SearchContext = {
+  destination: string;
+  checkInTime: Date;
+  checkOutTime: Date;
+  adultMemberCount: number;
+  childrenCount: number;
+  hotelId: string;
+  saveSearchValue: (
+    destination: string,
+    checkInTime: Date,
+    checkOutTime: Date,
+    adultMemberCount: number,
+    childrenCount: number,
+    hotelId?: string
+  ) => void;
+};
+
+type SearchContextProvider = {
+  children: React.ReactNode;
+};
+
 type ToastPros = {
   message: string;
   type: "SUCCESS" | "ERROR";
@@ -55,6 +76,67 @@ type HotelType = {
   price: number;
   rating: number;
   facilities: string[];
-  images: string[];
+  imageURIs: string[];
   lastUpdated: Date;
+};
+
+type searchParams = {
+  destination: string;
+  checkInTime: string;
+  checkOutTime: string;
+  adultMemberCount: string;
+  childrenCount: string;
+  pageNumber: string;
+  type?: string[];
+  facilities?: string[];
+  rating?: string[];
+  price?: string;
+  sortOpts?: string;
+};
+
+type HotelSearchResponse = {
+  data: HotelType[];
+  pagination: {
+    totalHotels: number;
+    page: number;
+    pages: number;
+  };
+};
+
+type PaginationData = {
+  page: number;
+  pages: number;
+  onPageChange: (page: number) => void;
+};
+
+type ratingFilter = {
+  selectedRating: string[];
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+type FacilityFilter = {
+  selectedFacility: string[];
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+type HotelTypeFilter = {
+  selectedHotelType: string[];
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+type PriceFilter = {
+  selectedPrice: number | undefined;
+  onChange: (price?: number) => void;
+};
+
+type GuestInfoFormData = {
+  checkInTime: Date;
+  checkOutTime: Date;
+  adultMemberCount: number;
+  childrenCount: number;
+};
+
+type GuestInfoData = {
+  hotelId: string;
+  pricePerNight: number;
 };

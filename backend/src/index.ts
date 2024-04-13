@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes";
 import hotelRoutes from "./routes/myHotels";
+import searchHotels from "./routes/searchHotels";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -39,6 +40,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/hotels", hotelRoutes);
+app.use("/api/v1/hotels", searchHotels);
 app.listen(8888, () => {
   console.log("Server is Up.");
 });

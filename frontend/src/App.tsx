@@ -7,6 +7,8 @@ import { useAppContext } from './contexts/AppContext'
 import AddHotel from './pages/AddHotels'
 import MyHotels from './pages/MyHotels'
 import EditHotel from './pages/EditHotel'
+import Search from './pages/Search'
+import Details from './pages/Details'
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
 
       )}
       <Route path='/register' element={<Layout ><Register /> </Layout>} />
+      <Route path='/search' element={<Layout><Search /></Layout>} />
+      <Route path='/details/:id' element={<Layout><Details /></Layout>} />
 
       <Route path='/sign-in' element={<Layout><SignIn /></Layout>} />
 

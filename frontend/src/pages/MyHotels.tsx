@@ -30,7 +30,7 @@ const MyHotels = () => {
             </div>
             <div className="flex flex-col gap-6">
                 {hotels.map(hotel => (
-                    <div className="flex flex-col rounded-lg p-6 gap-4 justify-between border border-slate-300">
+                    <div key={hotel._id} className="flex flex-col rounded-lg p-6 gap-4 justify-between border border-slate-300">
                         <h2 className="text-xl">{hotel.name}</h2>
                         <div className="whitespace-pre-line">{hotel.description}</div>
                         <div className="flex gap-2 flex-wrap ">

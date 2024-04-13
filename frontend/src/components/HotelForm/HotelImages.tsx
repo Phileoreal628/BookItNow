@@ -18,7 +18,7 @@ const HotelImages = () => {
                 {exsitingImages &&
                     <div className="grid grid-cols-6 gap-5">
                         {exsitingImages.map(image => (
-                            <div className="relative group">
+                            <div key={image} className="relative group">
                                 <img src={image} className="min-h-full object-cover" />
                                 <button
                                     onClick={(event) => { handleDelete(event, image) }}
