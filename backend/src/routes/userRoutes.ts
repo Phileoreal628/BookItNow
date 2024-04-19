@@ -119,4 +119,21 @@ router.post("/logout", (req: Request, res: Response) => {
   res.status(201).send();
 });
 
+router.get("/getUser", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findOne({
+      _id: userId,
+    }).select("-password");
+
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+    }
+    res.status(201).send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
 export default router;

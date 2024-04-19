@@ -31,6 +31,7 @@ type SearchContext = {
     childrenCount: number,
     hotelId?: string
   ) => void;
+  resetSearch: () => void;
 };
 
 type SearchContextProvider = {
@@ -139,4 +140,20 @@ type GuestInfoFormData = {
 type GuestInfoData = {
   hotelId: string;
   pricePerNight: number;
+};
+
+type BookingUserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  _id: string;
+};
+
+type BookingSummary = {
+  hotel: HotelType;
+  checkIn: Date;
+  checkOut: Date;
+  adultMemberCount: number;
+  childrenCount: number;
+  nightOfStay: number;
 };

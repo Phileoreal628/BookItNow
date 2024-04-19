@@ -146,3 +146,13 @@ export const getHotel = async (id: string): Promise<HotelType> => {
   const result = await response.json();
   return result;
 };
+
+export const getLoggedInUser = async () => {
+  const response = await fetch(`${SERVER_URL}/api/v1/auth/getUser`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error("Failed To Fetch User");
+  const result = await response.json();
+  return result;
+};

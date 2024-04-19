@@ -11,16 +11,24 @@ const SearchBar = () => {
 
     const searchContext = useSearchContext();
 
-    const [destination, setDestination] = useState<string>("");
-    const [checkInTime, setCheckInTime] = useState<Date>(new Date());
-    const [checkOutTime, setCheckOutTime] = useState<Date>(new Date());
-    const [adultMemberCount, setAdultMemberCount] = useState<number>(1);
-    const [childrenCount, setChildrenCount] = useState<number>(0);
+    const [destination, setDestination] = useState<string>(searchContext.destination);
+    const [checkInTime, setCheckInTime] = useState<Date>(searchContext.checkInTime);
+    const [checkOutTime, setCheckOutTime] = useState<Date>(searchContext.checkOutTime);
+    const [adultMemberCount, setAdultMemberCount] = useState<number>(searchContext.adultMemberCount);
+    const [childrenCount, setChildrenCount] = useState<number>(searchContext.childrenCount);
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         searchContext.saveSearchValue(destination, checkInTime, checkOutTime, adultMemberCount, childrenCount);
         navigate("/search");
+    }
+    const resetForm = () => {
+        searchContext.resetSearch();
+        setDestination("");
+        setCheckInTime(new Date());
+        setCheckOutTime(new Date());
+        setAdultMemberCount(1);
+        setChildrenCount(0);
     }
     const minDate = new Date();
     const maxDate = new Date();
@@ -28,7 +36,7 @@ const SearchBar = () => {
 
 
     return (
-        <form onSubmit={handleSubmit} className="items-center p-3 -mt-8 gap-4 bg-orange-400 rounded shadow-md grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+        <form onSubmit={handleSubmit} onReset={resetForm} className="items-center p-3 -mt-8 gap-4 bg-orange-400 rounded shadow-md grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
             <div className="flex items-center flex-1 p-2 bg-white">
                 <MdTravelExplore className="mr-2" size={25} />
                 <input className="text-md w-full focus:outline-none" placeholder="Where are you going ?" value={destination} onChange={(event) => setDestination(event.target.value)} />
@@ -89,7 +97,7 @@ const SearchBar = () => {
                 <button type="submit" className="w-2/3 bg-blue-600 text-white h-full p-2 font-bold text-xl hover:bg-blue-500">
                     Search
                 </button>
-                <button className="w-1/3 bg-red-600 text-white h-full p-2 font-bold text-xl hover:bg-red-500">
+                <button type="reset" className="w-1/3 bg-red-600 text-white h-full p-2 font-bold text-xl hover:bg-red-500">
                     Clear
                 </button>
             </div>
