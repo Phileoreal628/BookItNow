@@ -193,3 +193,13 @@ export const reserveRoom = async (formData: BookingFormData) => {
   const result = await response.json();
   return result;
 };
+
+export const myBookings = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/hotels/my-bookings`, {
+    method: "GET",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error("Failed To Fetch Hotel");
+  const result = await response.json();
+  return result;
+};

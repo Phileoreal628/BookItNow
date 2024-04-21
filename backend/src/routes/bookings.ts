@@ -123,5 +123,30 @@ router.post(
     }
   }
 );
+router.get("/my-bookings", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
 
+    const hotels = await Hotel.find({
+      bookings: { $elemMatch: { userId: userId } },
+    });
+
+    const bookings = hotels.map(hotel => {
+      const userBookings = hotel.bookings.filter(
+        book => book.userId === userId
+      );
+
+      const hotelWithBooking = {
+        ...hotel.toObject(),
+        bookings: userBookings,
+      };
+      return hotelWithBooking;
+    });
+
+    res.status(201).send(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(501).json({ message: "Something Went Wrong" });
+  }
+});
 export default router;

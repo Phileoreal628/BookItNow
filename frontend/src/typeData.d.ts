@@ -80,6 +80,7 @@ type HotelType = {
   facilities: string[];
   imageURIs: string[];
   lastUpdated: Date;
+  bookings: BookingType[];
 };
 
 type searchParams = {
