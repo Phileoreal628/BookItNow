@@ -156,3 +156,40 @@ export const getLoggedInUser = async () => {
   const result = await response.json();
   return result;
 };
+
+export const createPaymentIntent = async (
+  hotelId: string,
+  nightOfStay: string
+): Promise<PaymentIntentResponse> => {
+  const response = await fetch(
+    `${SERVER_URL}/api/v1/hotels/${hotelId}/bookings/payment-intent`,
+    {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ nightOfStay }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (!response.ok) throw new Error("Failed To Create Intent");
+  const result = await response.json();
+  return result;
+};
+
+export const reserveRoom = async (formData: BookingFormData) => {
+  const response = await fetch(
+    `${SERVER_URL}/api/v1/hotels/${formData.hotelId}/bookings`,
+    {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (!response.ok) throw new Error("Failed To Book");
+  const result = await response.json();
+  return result;
+};

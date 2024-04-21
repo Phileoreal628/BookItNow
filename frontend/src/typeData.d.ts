@@ -14,6 +14,7 @@ type ToastMessage = {
 type AppContextType = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
+  stripePayment: Promise<Stripe | null>;
 };
 
 type SearchContext = {
@@ -156,4 +157,36 @@ type BookingSummary = {
   adultMemberCount: number;
   childrenCount: number;
   nightOfStay: number;
+};
+
+type BookingType = {
+  _id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  checkIn: Date;
+  checkOut: Date;
+  adultMemberCount: number;
+  childrenCount: number;
+  totalCost: number;
+};
+
+type PaymentIntentResponse = {
+  paymentIntentId: string;
+  clientSecret: string;
+  totalCost: number;
+};
+
+type BookingFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  checkIn: string;
+  checkOut: string;
+  adultMemberCount: number;
+  childrenCount: number;
+  totalCost: number;
+  hotelId: string;
+  paymentIntentId: string;
 };

@@ -2,8 +2,14 @@ import React, { useContext, useState } from "react";
 import { Toast } from "../components/Toast";
 import { useQuery } from "react-query";
 import * as apiClient from "../apiClients";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripeKey = import.meta.env.VITE_STRIPE_PUB_KEY || "";
+
+const stripePayment = loadStripe(stripeKey);
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
+
 
 export const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -26,7 +32,8 @@ export const AppContextProvider = ({ children }: { children: React.ReactNode }) 
         showToast: (toastMsg) => {
             setToast(toastMsg);
         },
-        isLoggedIn: loggedIn
+        isLoggedIn: loggedIn,
+        stripePayment
     }}>
         {children}
         {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(undefined)} />}
