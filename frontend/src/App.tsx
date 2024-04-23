@@ -11,6 +11,7 @@ import Search from './pages/Search'
 import Details from './pages/Details'
 import Booking from './pages/Booking'
 import MyBookings from './pages/MyBooking'
+import HomePage from './pages/HomePage'
 
 function App() {
 
@@ -19,9 +20,7 @@ function App() {
   return (
 
     <Routes>
-      <Route element={<Layout >
-        <p>Home Page</p>
-      </Layout>} path='/' />
+      <Route element={<Layout ><HomePage /></Layout>} path='/' />
       {isLoggedIn && (
         <>
           <Route path='/add-hotel' element={<Layout><AddHotel /></Layout>} />

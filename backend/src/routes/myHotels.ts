@@ -55,6 +55,15 @@ router.post(
     }
   }
 );
+router.get("/getAllHotels", async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find().sort("-lastUpdated");
+    res.json(hotels);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong" });
+  }
+});
 
 router.get("/getMyHotels", verifyToken, async (req: Request, res: Response) => {
   try {

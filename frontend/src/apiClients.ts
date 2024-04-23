@@ -203,3 +203,12 @@ export const myBookings = async (): Promise<HotelType[]> => {
   const result = await response.json();
   return result;
 };
+
+export const fetchAllHotels = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${SERVER_URL}/api/v1/hotels/getAllHotels`, {
+    method: "GET",
+  });
+  if (!response.ok) throw new Error("Failed To Fetch Hotels");
+  const result = await response.json();
+  return result;
+};
